@@ -5,6 +5,4 @@ module FlappyV3 {
 
     opens  sample;
     opens  sample.controller;
-    opens  sample.model;
-    opens  sample.view;
 }

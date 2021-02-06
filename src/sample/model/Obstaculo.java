@@ -2,11 +2,13 @@ package sample.model;
 
 
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import sample.Main;
+import sample.controller.Controller;
 
-public class Obstaculo {
+import java.util.Observable;
+
+public class Obstaculo extends Observable implements  Runnable  {
 
     private int cantidad_vidas;
     private int x;
@@ -23,8 +25,8 @@ public class Obstaculo {
         this.y = y;
         this.velocidad = velocidad;
         this.nombreImagen = nombreImagen;
-        this.ancho = (int) Main.imagenes.get(nombreImagen).getWidth();
-        this.alto = (int) Main.imagenes.get(nombreImagen).getHeight();
+        this.ancho = (int) Controller.imagenes.get(nombreImagen).getWidth();
+        this.alto = (int) Controller.imagenes.get(nombreImagen).getHeight();
     }
 
     public int getCantidad_vidas() {
@@ -49,9 +51,11 @@ public class Obstaculo {
 
     public void pintar(GraphicsContext graficos){
         if(this.captura){
+            graficos.drawImage(Controller.imagenes.get(nombreImagen) , x , y);
+            graficos.drawImage(Controller.imagenes.get("over"), 180 , 150);
             return;
         }else{
-            graficos.drawImage(Main.imagenes.get(nombreImagen) , x , y);
+            graficos.drawImage(Controller.imagenes.get(nombreImagen) , x , y);
             graficos.rect(x , y , ancho , alto);
         }
     }
@@ -60,4 +64,9 @@ public class Obstaculo {
         x -= velocidad;
     }
 
+
+    @Override
+    public void run() {
+
+    }
 }
