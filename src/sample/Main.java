@@ -4,7 +4,9 @@ import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 
 import javafx.event.EventHandler;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Group;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -49,12 +51,18 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        initializeComponents();
-        eventoBotones();
+       /* initializeComponents();
+        eventoBotones();*/
+        Parent root = FXMLLoader.load(getClass().getResource("view/sample.fxml"));
+        primaryStage.setTitle("Hello World");
+        Scene scene = new Scene(root);
         primaryStage.setScene(scene);
+        primaryStage.show();
+
+       /* primaryStage.setScene(scene);
         primaryStage.setTitle("CAT SOLO");
         primaryStage.show();
-        cicloJuego();
+        cicloJuego();*/
     }
 
     public void cicloJuego(){

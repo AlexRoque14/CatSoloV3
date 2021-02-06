@@ -14,16 +14,13 @@ public class Controller {
     private ImageView Cat;
 
     @FXML
-    private Button BtnIniciar;
-
-    @FXML
-    private ImageView ImagenInicio;
+    private ImageView BtnIniciar;
 
     @FXML
     private Text Tiitulo;
 
     @FXML
     void onMouseClikedIniciar(MouseEvent event) {
-
+        System.out.println("holaMundo");
     }
 }
