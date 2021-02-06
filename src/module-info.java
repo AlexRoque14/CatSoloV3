@@ -4,4 +4,7 @@ module FlappyV3 {
     requires  javafx.controls;
 
     opens  sample;
+    opens  sample.controller;
+    opens  sample.model;
+    opens  sample.view;
 }
