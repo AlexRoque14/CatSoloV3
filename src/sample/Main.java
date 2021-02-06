@@ -96,6 +96,7 @@ public class Main extends Application {
         player = new Player(move_x , move_y , 0 , "cat");
         back = new FondoBack(0 , 0 , "fondo" , 3);
         back2 = new FondoBack(0, 0 , "fondo", 3);
+
         obstaculo = new Obstaculo(1, 500, 295, 2 , "item1");
         obstaculo2 = new Obstaculo(1, 500, 0, 2 , "item2");
 
@@ -113,6 +114,7 @@ public class Main extends Application {
         imagenes.put("pikachu", new Image("pikachu.png"));
         imagenes.put("fondo", new Image("fondo.jpg"));
         imagenes.put("tilemap", new Image("tilemap.png"));
+
         imagenes.put("item1", new Image("item1.png"));
         imagenes.put("item2", new Image("item2.png"));
     }
