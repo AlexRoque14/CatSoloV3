@@ -11,6 +11,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
+
 import sample.model.FondoBack;
 import sample.model.Obstaculo;
 import sample.model.Player;
@@ -40,7 +41,6 @@ public class Main extends Application {
     private Obstaculo obstaculo2;
 
     public static HashMap<String, Image> imagenes;
-
 
     public static void main(String[] args) {
         launch(args);
@@ -83,6 +83,7 @@ public class Main extends Application {
 
 
     public void initializeComponents(){
+
         imagenes = new HashMap<String, Image>();
         uploadImages();
         player = new Player(move_x , move_y , 0 , "cat");
