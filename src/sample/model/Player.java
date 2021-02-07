@@ -99,12 +99,9 @@ public class Player {
                 this.vidas += item.getCantidad_vidas();
                 item.setCaptura(true);
                 Obstaculo.status = false;
-
                 Controller.animation.stop();
                 Controller.audio.stop();
                 initializeSound();
-
-
             }
         }
 }

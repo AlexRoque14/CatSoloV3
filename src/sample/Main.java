@@ -15,8 +15,9 @@ import java.io.File;
 
 
 public class Main extends Application {
-    Controller con;
     public static  AudioClip audio;
+
+
 
     public static void main(String[] args) {
         launch(args);

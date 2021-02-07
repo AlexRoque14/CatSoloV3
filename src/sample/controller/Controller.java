@@ -45,6 +45,8 @@ public class Controller implements Observer {
     /*** Movement ***/
     private int move_x = 0;
     private int move_y = 200;
+    private double timer = 0;
+    private int auxiliar = 0;
 
     /*** Variables buttons keyboard  ***/
     public static boolean up;
@@ -113,7 +115,7 @@ public class Controller implements Observer {
     public void initializeComponents(){
         imagenes = new HashMap<String, Image>();
         uploadImages();
-        player = new Player(move_x , move_y , 0 , "cat");
+        player = new Player(move_x , move_y , 3 , "cat");
         back = new FondoBack(0 , 0 , "fondo" , "fondo", 3);
 
         /***launch Threads ***/
@@ -133,7 +135,9 @@ public class Controller implements Observer {
         animation = new AnimationTimer() {
             @Override
             public void handle(long actually_time) {
-                double t = (actually_time - init_tiempo) / 1000000000.0;   //60 veces x 1 seg
+                 timer = ((actually_time - init_tiempo) / 1000000000.0);   //60 veces x 1 seg
+                System.out.println("Timer:" + timer);
+                auxiliar++;
                 updateStatus();
                 pintar();
             }
@@ -151,9 +155,21 @@ public class Controller implements Observer {
             obs.mover();
             player.verificarColision(obs);
         }
+
     }
 
     public void pintar(){
+        if(auxiliar == 400){
+            back = new FondoBack(0 , 0 , "fondo2" , "fondo2", 3);
+        } else if (auxiliar == 1000){
+            back = new FondoBack(0 , 0 , "fondo3" , "fondo3", 3);
+        }else if(auxiliar == 1600 ){
+            back = new FondoBack(0 , 0 , "fondo4" , "fondo4", 3);
+        }else if(auxiliar == 2000){
+            back = new FondoBack(0 , 0 , "fondo" , "fondo", 3);
+            auxiliar = 0;
+        }
+
         back.pintar(graficos);
         player.pintar(graficos);
         Iterator iter = listView.iterator();
@@ -161,6 +177,7 @@ public class Controller implements Observer {
             obs = (Obstaculo) iter.next();
             obs.pintar(graficos);
         }
+
         graficos.fillText("Vidas: " + player.getVidas(), 20 , 20);
     }
 
@@ -168,6 +185,9 @@ public class Controller implements Observer {
         imagenes.put("cat",   new Image("cat.png"));
         imagenes.put("pikachu", new Image("pikachu.png"));
         imagenes.put("fondo", new Image("fondo.jpg"));
+        imagenes.put("fondo2", new Image("fondo2.png"));
+        imagenes.put("fondo3", new Image("fondo3.jpg"));
+        imagenes.put("fondo4", new Image("fondo4.jpg"));
         imagenes.put("item1", new Image("item1.png"));
         imagenes.put("item2", new Image("item2.png"));
         imagenes.put("over", new Image("gameover.png"));
@@ -227,11 +247,13 @@ public class Controller implements Observer {
 
     public void salir(){
         salir.setOnMouseClicked(value ->  {
-            Player.audio.stop();
-            Main.audio.play();
-            obs.setStatus(true);
-            obs.setCaptura(false);
+            obs.setCaptura(true);
+            obs.setStatus(false);
+            audio.stop();
             primaryStage.close();
+            Main.audio.play();
+            obs.setCaptura(false);
+            obs.setStatus(true);
         });
     }
 
