@@ -14,23 +14,27 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.media.AudioClip;
 import javafx.stage.Stage;
+import sample.Main;
 import sample.model.FondoBack;
 import sample.model.Obstaculo;
 import sample.model.Player;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.util.*;
 
 public class Controller implements Observer {
 
-    /*** Scene and JavaFX variables ***/
+        /*** Scene and JavaFX variables ***/
     private GraphicsContext graficos;
     private Group root;
     private Scene scene;
     private Canvas lienzo;
     private Stage primaryStage;
     private ImageView salir;
+    public static AudioClip audio;
 
     /*** Arraylist and Hashmap ***/
     public static AnimationTimer animation;
@@ -56,6 +60,17 @@ public class Controller implements Observer {
 
     @FXML
     void onMouseClikedIniciar(MouseEvent event) {
+        Main.audio.stop();
+        initializeStage();
+    }
+
+    @FXML
+    void onMouseClickedExit(MouseEvent event) {
+        System.exit(0);
+    }
+
+    public void initializeStage(){
+        initializeSound();
         initializeComponents();
         initalizeScene();
         eventoBotones();
@@ -104,15 +119,18 @@ public class Controller implements Observer {
         /***launch Threads ***/
         new Thread(new Obstaculo('1', this)).start();
         new Thread(new Obstaculo('2', this)).start();
+    }
 
-
-
-
+    public  void initializeSound(){
+        String musicFile = "src/sound/playing.mp3";
+        audio = new AudioClip(new File(musicFile).toURI().toString());
+        audio.play();
+        System.out.println("Volumen jugando: " + audio.getVolume());
     }
 
     public void cicloJuego(){
         long init_tiempo = System.nanoTime();
-         animation = new AnimationTimer() {
+        animation = new AnimationTimer() {
             @Override
             public void handle(long actually_time) {
                 double t = (actually_time - init_tiempo) / 1000000000.0;   //60 veces x 1 seg
@@ -207,6 +225,16 @@ public class Controller implements Observer {
         });
     }
 
+    public void salir(){
+        salir.setOnMouseClicked(value ->  {
+            Player.audio.stop();
+            Main.audio.play();
+            obs.setStatus(true);
+            obs.setCaptura(false);
+            primaryStage.close();
+        });
+    }
+
     @Override
     public void update(Observable o, Object arg) {
         switch ((String) arg) {
@@ -226,20 +254,4 @@ public class Controller implements Observer {
                 break;
         }
     }
-
-    public void salir(){
-        salir.setOnMouseClicked(value ->  {
-            System.exit(1);
-            //primaryStage.hide();
-        });
-
-    }
-
-    @FXML
-    void onMouseClickedExit(MouseEvent event) {
-        System.exit(0);
-    }
-
-
-
 }

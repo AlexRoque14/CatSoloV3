@@ -1,10 +1,12 @@
 package sample.model;
 
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.media.AudioClip;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import sample.Main;
 import sample.controller.Controller;
+
+import java.io.File;
 
 public class Player {
 
@@ -16,7 +18,7 @@ public class Player {
         private int direccion = 1;
         private int alto;
         private int ancho;
-
+        public static AudioClip audio;
 
         public Player(int moveX, int moveY, int vidas, String nombreImagen) {
             this.moveX = moveX;
@@ -81,14 +83,28 @@ public class Player {
             }
         }
 
+        public  void initializeSound(){
+            String musicFile = "src/sound/dead.mp3";
+            audio = new AudioClip(new File(musicFile).toURI().toString());
+            audio.setVolume(2);
+            audio.play();
+            System.out.println("Volumen muerte: " + audio.getVolume());
 
-        /** verificar para hilos **/
+        }
+
+
+    /** verificar para hilos **/
         public void verificarColision(Obstaculo item){
             if (!item.isCaptura() && this.obtenerRectangulo().getBoundsInLocal().intersects(item.obtenerRectangulo().getBoundsInLocal())){
                 this.vidas += item.getCantidad_vidas();
                 item.setCaptura(true);
-                Controller.animation.stop();
                 Obstaculo.status = false;
+
+                Controller.animation.stop();
+                Controller.audio.stop();
+                initializeSound();
+
+
             }
         }
 }
