@@ -18,7 +18,6 @@ public class Player {
         private int ancho;
 
 
-
         public Player(int moveX, int moveY, int vidas, String nombreImagen) {
             this.moveX = moveX;
             this.moveY = moveY;
@@ -28,7 +27,6 @@ public class Player {
             this.alto = (int) Controller.imagenes.get(nombreImagen).getHeight();
 
         }
-
 
         public int getVidas() {
             return vidas;
@@ -58,7 +56,7 @@ public class Player {
             }
             graficos.drawImage(Controller.imagenes.get(nombreImagen), moveX , moveY);
             graficos.setFill(Color.RED);
-            graficos.strokeRect(moveX , moveY , direccion*ancho , alto);
+            graficos.rect(moveX, moveY , direccion*ancho , alto);
         }
 
 

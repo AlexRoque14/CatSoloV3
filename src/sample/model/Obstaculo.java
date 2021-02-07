@@ -76,7 +76,7 @@ public class Obstaculo extends Observable implements  Runnable  {
         }else{
              graficos.drawImage(Controller.imagenes.get(nombreImagen) , x , y );
              graficos.setFill(Color.RED);
-             graficos.strokeRect(x , y , ancho , alto-10);
+             graficos.rect(x , y , ancho , alto-10);
         }
     }
 
