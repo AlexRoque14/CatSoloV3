@@ -1,6 +1,7 @@
 package sample.model;
 
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import sample.Main;
 import sample.controller.Controller;
@@ -15,6 +16,8 @@ public class Player {
         private int direccion = 1;
         private int alto;
         private int ancho;
+
+
 
         public Player(int moveX, int moveY, int vidas, String nombreImagen) {
             this.moveX = moveX;
@@ -54,7 +57,8 @@ public class Player {
                 moveX = ancho;
             }
             graficos.drawImage(Controller.imagenes.get(nombreImagen), moveX , moveY);
-            graficos.rect(moveX , moveY , direccion*ancho , alto);
+            graficos.setFill(Color.RED);
+            graficos.strokeRect(moveX , moveY , direccion*ancho , alto);
         }
 
 
@@ -86,6 +90,7 @@ public class Player {
                 this.vidas += item.getCantidad_vidas();
                 item.setCaptura(true);
                 Controller.animation.stop();
+                Obstaculo.status = false;
             }
         }
 }

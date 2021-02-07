@@ -3,6 +3,7 @@ package sample.model;
 
 import javafx.application.Platform;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import sample.Main;
 import sample.controller.Controller;
@@ -22,8 +23,9 @@ public class Obstaculo extends Observable implements  Runnable  {
     private int alto;
     private int ancho;
     private boolean captura = false;
-    private  static Semaphore mutex = new Semaphore(1);
+    private static Semaphore mutex = new Semaphore(1);
     private char id;
+    static boolean status = true;
 
     public Obstaculo(char id , Observer objeto) {
         this.id = id;
@@ -62,28 +64,30 @@ public class Obstaculo extends Observable implements  Runnable  {
         return new Rectangle(x , y , ancho , alto);
     }
 
+    public void setStatus(boolean status) {
+        this.status = status;
+    }
 
     public void pintar(GraphicsContext graficos){
         if(this.captura){
-            graficos.drawImage(Controller.imagenes.get(nombreImagen) , x , y);
-            graficos.drawImage(Controller.imagenes.get("over"), 180 , 150);
+            graficos.drawImage(Controller.imagenes.get(nombreImagen) , x , y );
+            graficos.drawImage(Controller.imagenes.get("over"), 180 , 150 );
             return;
         }else{
-             graficos.drawImage(Controller.imagenes.get(nombreImagen) , x , y);
-             graficos.rect(x , y , ancho , alto);
+             graficos.drawImage(Controller.imagenes.get(nombreImagen) , x , y );
+             graficos.setFill(Color.RED);
+             graficos.strokeRect(x , y , ancho , alto-10);
         }
     }
-
 
     public void mover() {
         x -= velocidad;
     }
 
-
     @Override
     public void run() {
         System.out.println("Run: " + nombreImagen);
-        while (true){
+        while (status){
             switch (this.id){
                 case '1' :
                     try {

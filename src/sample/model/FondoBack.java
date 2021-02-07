@@ -34,19 +34,13 @@ public class FondoBack {
         if(moveX <= -1*ancho){
             moveX = ancho;
         }
-
         if(moveX2 <= -1*ancho){
             moveX2 = ancho;
         }
 
-        if(Controller.rigth){
-            moveX -= velocidad;
-            moveX2-= velocidad;
-        }
-        if(Controller.left){
-            moveX += velocidad;
-            moveX2+= velocidad;
-        }
+        moveX -= velocidad;
+        moveX2-= velocidad;
+
     }
 
 

@@ -33,11 +33,8 @@ public class Controller implements Observer {
     public static AnimationTimer animation;
 
     public static HashMap<String, Image> imagenes;
-    public static ArrayList<Obstaculo> objObstaculo;
-
-    ObservableList<Obstaculo> data = FXCollections.observableArrayList();
-    ArrayList<Obstaculo> listView = new ArrayList<>(data);
-
+    public ObservableList<Obstaculo> data = FXCollections.observableArrayList();
+    public ArrayList<Obstaculo> listView = new ArrayList<>(data);
 
     private int move_x = 0;
     private int move_y = 200;
@@ -47,22 +44,9 @@ public class Controller implements Observer {
     public static boolean rigth;
     public static boolean left;
 
-    Player player;
-    FondoBack back;
-    Obstaculo obs;
-
-
-    @FXML
-    private ImageView fondo;
-
-    @FXML
-    private ImageView Cat;
-
-    @FXML
-    private ImageView BtnIniciar;
-
-    @FXML
-    private Text Tiitulo;
+    public Player player;
+    public FondoBack back;
+    public Obstaculo obs;
 
 
     @FXML
@@ -75,7 +59,6 @@ public class Controller implements Observer {
         primaryStage.show();
         cicloJuego();
     }
-
 
     public void initializeComponents(){
         imagenes = new HashMap<String, Image>();
@@ -90,18 +73,8 @@ public class Controller implements Observer {
         root.getChildren().add(lienzo);
         graficos = lienzo.getGraphicsContext2D();
 
-
-        /** verificar para hilos **/
-        //obstaculo = new Obstaculo(1, 500, 295, 0 , "item1");
-        //obstaculo2 = new Obstaculo(1, 500, 0, 0 , "item2");
-        /** verificar para hilos **/
-
-
         new Thread(new Obstaculo('1', this)).start();
         new Thread(new Obstaculo('2', this)).start();
-
-
-        //cicloJuego();
 
     }
 
@@ -129,11 +102,7 @@ public class Controller implements Observer {
             obs = (Obstaculo) iter.next(); /* Cast del Objeto a la Clase Persona*/
             obs.mover();
             player.verificarColision(obs);
-
         }
-
-        //player.verificarColision(obstaculo);
-        //player.verificarColision(obstaculo2);
     }
 
     public void pintar(){
@@ -146,7 +115,6 @@ public class Controller implements Observer {
             obs = (Obstaculo) iter.next(); /* Cast del Objeto a la Clase Persona*/
             obs.pintar(graficos);
         }
-
         graficos.fillText("Vidas: " + player.getVidas(), 20 , 20);
     }
 
@@ -159,7 +127,6 @@ public class Controller implements Observer {
         imagenes.put("item2", new Image("item2.png"));
         imagenes.put("over", new Image("gameover.png"));
     }
-
 
     public void eventoBotones(){
         scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
@@ -216,18 +183,15 @@ public class Controller implements Observer {
 
     @Override
     public void update(Observable o, Object arg) {
-
         switch ((String) arg) {
             case "1":
-                System.out.println("Agregando 1");
-                Obstaculo obstacleH1 = new Obstaculo(1, 500, 295, 3 , "item1");
+                Obstaculo obstacleH1 = new Obstaculo(1, 700, 295, 3 , "item1");
                 if(obstacleH1 != null){
                     Platform.runLater(() -> listView.add(obstacleH1));
                 }
                 break;
             case "2":
-                System.out.println("Agregando 2");
-                Obstaculo obstacleH2 = new Obstaculo(1, 500, 0, 3 , "item2");
+                Obstaculo obstacleH2 = new Obstaculo(1, 700, 0, 3 , "item2");
                 if(obstacleH2 != null){
                     Platform.runLater(() -> listView.add(obstacleH2));
                 }
