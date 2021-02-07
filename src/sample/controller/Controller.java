@@ -1,14 +1,15 @@
 package sample.controller;
 
 import javafx.animation.AnimationTimer;
+import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
@@ -19,9 +20,8 @@ import sample.model.FondoBack;
 import sample.model.Obstaculo;
 import sample.model.Player;
 
-import java.util.HashMap;
-import java.util.Observable;
-import java.util.Observer;
+import java.net.URL;
+import java.util.*;
 
 public class Controller implements Observer {
 
@@ -33,6 +33,12 @@ public class Controller implements Observer {
     public static AnimationTimer animation;
 
     public static HashMap<String, Image> imagenes;
+    public static ArrayList<Obstaculo> objObstaculo;
+
+    ObservableList<Obstaculo> data = FXCollections.observableArrayList();
+    ArrayList<Obstaculo> listView = new ArrayList<>(data);
+
+
     private int move_x = 0;
     private int move_y = 200;
 
@@ -43,9 +49,8 @@ public class Controller implements Observer {
 
     Player player;
     FondoBack back;
-    FondoBack back2;
-    Obstaculo obstaculo;
-    Obstaculo obstaculo2;
+    Obstaculo obs;
+
 
     @FXML
     private ImageView fondo;
@@ -64,7 +69,6 @@ public class Controller implements Observer {
     void onMouseClikedIniciar(MouseEvent event) {
         initializeComponents();
         eventoBotones();
-
         primaryStage = new Stage();
         primaryStage.setScene(scene);
         primaryStage.setTitle("CAT SOLO");
@@ -76,21 +80,28 @@ public class Controller implements Observer {
     public void initializeComponents(){
         imagenes = new HashMap<String, Image>();
         uploadImages();
+
         player = new Player(move_x , move_y , 0 , "cat");
-
         back = new FondoBack(0 , 0 , "fondo" , "fondo", 3);
-
-        /** verificar para hilos **/
-        obstaculo = new Obstaculo(1, 500, 295, 2 , "item1");
-        obstaculo2 = new Obstaculo(1, 500, 0, 2 , "item2");
-        /** verificar para hilos **/
-
 
         root = new Group();
         scene = new Scene(root, 700 , 500);
         lienzo = new Canvas(700, 500);
         root.getChildren().add(lienzo);
         graficos = lienzo.getGraphicsContext2D();
+
+
+        /** verificar para hilos **/
+        //obstaculo = new Obstaculo(1, 500, 295, 0 , "item1");
+        //obstaculo2 = new Obstaculo(1, 500, 0, 0 , "item2");
+        /** verificar para hilos **/
+
+
+        new Thread(new Obstaculo('1', this)).start();
+        new Thread(new Obstaculo('2', this)).start();
+
+
+        //cicloJuego();
 
     }
 
@@ -112,14 +123,33 @@ public class Controller implements Observer {
         player.mover();
         back.mover();
 
-        /** verificar para hilos **/
-        obstaculo.mover();
-        obstaculo2.mover();
-        /** verificar para hilos **/
+        Iterator iter = listView.iterator();
+        while(iter.hasNext()){
+            System.out.println("moviendo obstaculo");
+            obs = (Obstaculo) iter.next(); /* Cast del Objeto a la Clase Persona*/
+            obs.mover();
+            player.verificarColision(obs);
 
-        player.verificarColision(obstaculo);
-        player.verificarColision(obstaculo2);
+        }
+
+        //player.verificarColision(obstaculo);
+        //player.verificarColision(obstaculo2);
     }
+
+    public void pintar(){
+        back.pintar(graficos);
+        player.pintar(graficos);
+
+        Iterator iter = listView.iterator();
+        while(iter.hasNext()){
+            System.out.println("pitando obstaculo");
+            obs = (Obstaculo) iter.next(); /* Cast del Objeto a la Clase Persona*/
+            obs.pintar(graficos);
+        }
+
+        graficos.fillText("Vidas: " + player.getVidas(), 20 , 20);
+    }
+
 
     public void uploadImages(){
         imagenes.put("cat",   new Image("cat.png"));
@@ -130,13 +160,6 @@ public class Controller implements Observer {
         imagenes.put("over", new Image("gameover.png"));
     }
 
-    public void pintar(){
-        back.pintar(graficos);
-        player.pintar(graficos);
-        obstaculo.pintar(graficos);
-        obstaculo2.pintar(graficos);
-        graficos.fillText("Vidas: " + player.getVidas(), 20 , 20);
-    }
 
     public void eventoBotones(){
         scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
@@ -194,6 +217,23 @@ public class Controller implements Observer {
     @Override
     public void update(Observable o, Object arg) {
 
+        switch ((String) arg) {
+            case "1":
+                System.out.println("Agregando 1");
+                Obstaculo obstacleH1 = new Obstaculo(1, 500, 295, 3 , "item1");
+                if(obstacleH1 != null){
+                    Platform.runLater(() -> listView.add(obstacleH1));
+                }
+                break;
+            case "2":
+                System.out.println("Agregando 2");
+                Obstaculo obstacleH2 = new Obstaculo(1, 500, 0, 3 , "item2");
+                if(obstacleH2 != null){
+                    Platform.runLater(() -> listView.add(obstacleH2));
+                }
+                break;
+        }
 
     }
+
 }

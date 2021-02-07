@@ -68,13 +68,9 @@ public class Player {
                 }
             }
             if(Controller.left){
-                if(moveX == 20){
-                    moveX = 20;
-                }else{
                     moveX -=velocidad;
-                }
-
             }
+
             if(Controller.down){
                 moveY +=velocidad;
             }
