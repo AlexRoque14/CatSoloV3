@@ -12,7 +12,6 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
@@ -159,7 +158,8 @@ public class Controller implements Observer {
         animation = new AnimationTimer() {
             @Override
             public void handle(long actually_time) {
-                timer = ((actually_time - init_tiempo) / 1000000000.0);   //60 veces x 1 seg
+                //timer = ((actually_time - init_tiempo) / 1000000000.0);   //60 veces x 1 seg
+                //System.out.println("timer: " + timer);
                 auxiliar++;
                 updateStatus();
                 pintar();
@@ -178,6 +178,7 @@ public class Controller implements Observer {
             obs.mover();
             player.verificarColision(obs);
         }
+
     }
 
     public void pintar(){
@@ -205,16 +206,16 @@ public class Controller implements Observer {
     }
 
     public void uploadImages(){
-        imagenes.put("cat",   new Image("cat.png"));
-        imagenes.put("pikachu", new Image("pikachu.png"));
-        imagenes.put("fondo", new Image("fondo.jpg"));
-        imagenes.put("fondo2", new Image("fondo2.png"));
-        imagenes.put("fondo3", new Image("fondo3.jpg"));
-        imagenes.put("fondo4", new Image("fondo4.jpg"));
-        imagenes.put("cov1", new Image("covid1.png"));
-        imagenes.put("cov2", new Image("covid3.png"));
-        imagenes.put("cov3", new Image("covid4.png"));
-        imagenes.put("over", new Image("gameover.png"));
+        imagenes.put("cat",   new Image("imageScene/cat.png"));
+        imagenes.put("pikachu", new Image("imageScene/pikachu.png"));
+        imagenes.put("fondo", new Image("imageScene/fondo.jpg"));
+        imagenes.put("fondo2", new Image("imageScene/fondo2.png"));
+        imagenes.put("fondo3", new Image("imageScene/fondo3.jpg"));
+        imagenes.put("fondo4", new Image("imageScene/fondo4.jpg"));
+        imagenes.put("cov1", new Image("imageScene/covid1.png"));
+        imagenes.put("cov2", new Image("imageScene/covid3.png"));
+        imagenes.put("cov3", new Image("imageScene/covid4.png"));
+        imagenes.put("over", new Image("imageScene/gameover.png"));
     }
 
     public void eventoBotones(){

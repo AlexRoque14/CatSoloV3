@@ -9,7 +9,7 @@
     <children>
         <ImageView fx:id="fondo" fitHeight="389.0" fitWidth="609.0" pickOnBounds="true">
          <image>
-            <Image url="@../../fondo.jpg" />
+            <Image url="@../../imageScene/fondo.jpg" />
          </image>
         </ImageView>
         <ImageView fx:id="Cat" fitHeight="150.0" fitWidth="200.0" layoutX="205.0" layoutY="190.0" pickOnBounds="true" preserveRatio="true">
