@@ -18,7 +18,7 @@ public class Player {
         private int direccion = 1;
         private int alto;
         private int ancho;
-        public static AudioClip audio;
+
 
         public Player(int moveX, int moveY, int vidas, String nombreImagen) {
             this.moveX = moveX;
@@ -28,10 +28,6 @@ public class Player {
             this.ancho = (int) Controller.imagenes.get(nombreImagen).getWidth();
             this.alto = (int) Controller.imagenes.get(nombreImagen).getHeight();
 
-        }
-
-        public int getVidas() {
-            return vidas;
         }
 
         public void setNombreImagen(String nombreImagen) {
@@ -52,6 +48,11 @@ public class Player {
             return new Rectangle(moveX , moveY , direccion*ancho , alto);
         }
 
+        public int getVidas() {
+            return vidas;
+        }
+
+
         public void pintar(GraphicsContext graficos){
             if(direccion == -1){
                 moveX = ancho;
@@ -61,9 +62,7 @@ public class Player {
             graficos.rect(moveX, moveY , direccion*ancho , alto);
         }
 
-
         public void mover(){
-
             if(Controller.rigth){
                 if(moveX >= 600){
                     moveX = 600;
@@ -71,37 +70,41 @@ public class Player {
                     moveX += velocidad;
                 }
             }
+
             if(Controller.left){
-                    moveX -=velocidad;
+                if(moveX == 10){
+                    moveX = 10;
+                }else{
+                    moveX = -1;
+                }
             }
 
             if(Controller.down){
-                moveY +=velocidad;
+                if(moveY >= 450){
+                    moveY = 450;
+                }else{
+                    moveY +=velocidad;
+                }
             }
+
             if(Controller.up){
-                moveY -=velocidad;
+                if(moveY == -10){
+                    moveY = -10;
+                }else{
+                    moveY -=velocidad;
+                }
             }
-        }
-
-        public  void initializeSound(){
-            String musicFile = "src/sound/dead.mp3";
-            audio = new AudioClip(new File(musicFile).toURI().toString());
-            audio.setVolume(2);
-            audio.play();
-            System.out.println("Volumen muerte: " + audio.getVolume());
-
         }
 
 
     /** verificar para hilos **/
         public void verificarColision(Obstaculo item){
             if (!item.isCaptura() && this.obtenerRectangulo().getBoundsInLocal().intersects(item.obtenerRectangulo().getBoundsInLocal())){
-                this.vidas += item.getCantidad_vidas();
                 item.setCaptura(true);
                 Obstaculo.status = false;
                 Controller.animation.stop();
-                Controller.audio.stop();
-                initializeSound();
+            }else{
+                this.vidas += item.getPuntos();
             }
         }
 }
