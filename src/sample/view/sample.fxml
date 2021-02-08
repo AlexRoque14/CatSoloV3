@@ -35,7 +35,7 @@
       <Button fx:id="ut1" layoutX="243.0" layoutY="308.0" mnemonicParsing="false" onAction="#onMouseClikedIniciar" opacity="0.0" prefHeight="39.0" prefWidth="121.0" text="Button" />
       <ImageView fitHeight="39.0" fitWidth="45.0" layoutX="49.0" layoutY="317.0" pickOnBounds="true">
          <image>
-            <Image url="@../../controls.png" />
+            <Image url="@../../imageScene/controls.png" />
          </image>
       </ImageView>
       <Button fx:id="controls" layoutX="50.0" layoutY="321.0" mnemonicParsing="false" onMouseClicked="#controlsON" opacity="0.0" prefHeight="39.0" prefWidth="45.0" />

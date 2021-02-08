@@ -22,10 +22,11 @@ public class Obstaculo extends Observable implements  Runnable  {
     private int ancho;
     private int puntos;
     private int velocidad;
+    private int anchoPintar;
+    private int altoPintar;
     private String nombreImagen;
     private boolean captura = false;
     public static boolean status = true;
-    public static AudioClip audio;
 
 
     private static Semaphore mutex = new Semaphore(1);
@@ -36,14 +37,16 @@ public class Obstaculo extends Observable implements  Runnable  {
         addObserver(objeto);
     }
 
-    public Obstaculo( int puntos, int x, int y, int velocidad, String nombreImagen) {
+    public Obstaculo( int puntos, int x, int y, int velocidad, String nombreImagen , int alto , int ancho , int altoPintar) {
         this.puntos = puntos;
         this.x = x;
         this.y = y;
+        this.alto = alto;
+        this.ancho = ancho;
+        this.anchoPintar = 90;
         this.velocidad = velocidad;
+        this.altoPintar = altoPintar;
         this.nombreImagen = nombreImagen;
-        this.ancho = (int) Controller.imagenes.get(nombreImagen).getWidth();
-        this.alto = (int) Controller.imagenes.get(nombreImagen).getHeight();
     }
 
 
@@ -71,11 +74,11 @@ public class Obstaculo extends Observable implements  Runnable  {
 
     public void pintar(GraphicsContext graficos){
         if(this.captura){
-            //graficos.drawImage(Controller.imagenes.get(nombreImagen) , x , y );
+            //graficos.drawImage(Controller.imagenes.get(nombreImagen) , x , y , anchoPintar , altoPintar);
             graficos.drawImage(Controller.imagenes.get("over"), 180 , 150);
             return;
         }else{
-             graficos.drawImage(Controller.imagenes.get(nombreImagen) , x , y );
+             graficos.drawImage(Controller.imagenes.get(nombreImagen) , x , y , anchoPintar , altoPintar);
              graficos.setFill(Color.RED);
              graficos.rect(x , y , ancho , alto-10);
         }
@@ -84,6 +87,7 @@ public class Obstaculo extends Observable implements  Runnable  {
     public void mover() {
         x -= velocidad;
     }
+
 
     @Override
     public void run() {
@@ -110,10 +114,21 @@ public class Obstaculo extends Observable implements  Runnable  {
                         e.printStackTrace();
                     }
                     break;
+                case '3' :
+                    try {
+                        mutex.acquire();
+                        setChanged();
+                        notifyObservers(String.valueOf(id));
+                        System.out.println("");
+                        mutex.release();
+                    }catch (InterruptedException e){
+                        e.printStackTrace();
+                    }
+                    break;
                 default:
             }
             try {
-                Thread.sleep(ThreadLocalRandom.current().nextLong(3000) + 200);
+                Thread.sleep(ThreadLocalRandom.current().nextLong(7000) + 200);
             }catch (InterruptedException e){
                 e.printStackTrace();
             }

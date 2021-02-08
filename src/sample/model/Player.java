@@ -1,23 +1,21 @@
 package sample.model;
 
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.media.AudioClip;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import sample.controller.Controller;
 
-import java.io.File;
 
 public class Player {
 
-        private int moveX;
-        private int moveY;
-        private int vidas;
-        private String nombreImagen;
-        private int velocidad = 5;
-        private int direccion = 1;
-        private int alto;
-        private int ancho;
+    private int alto;
+    private int ancho;
+    private int moveX;
+    private int moveY;
+    private int vidas;
+    private int velocidad = 5;
+    private int direccion = 1;
+    private String nombreImagen;
 
 
         public Player(int moveX, int moveY, int vidas, String nombreImagen) {
@@ -97,7 +95,6 @@ public class Player {
         }
 
 
-    /** verificar para hilos **/
         public void verificarColision(Obstaculo item){
             if (!item.isCaptura() && this.obtenerRectangulo().getBoundsInLocal().intersects(item.obtenerRectangulo().getBoundsInLocal())){
                 item.setCaptura(true);

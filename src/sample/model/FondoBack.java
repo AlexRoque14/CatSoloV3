@@ -8,11 +8,11 @@ public class FondoBack {
     private int moveX;
     private int moveX2;
     private int moveY;
-    private String nombreImagen;
-    private String nombreImagen2;
-    private int velocidad = 5;
     private int ancho;
     private int alto;
+    private int velocidad = 5;
+    private String nombreImagen;
+    private String nombreImagen2;
 
     public FondoBack(int moveX, int moveY, String nombreImagen, String nombreImagen2, int velocidad) {
         this.moveX = moveX;

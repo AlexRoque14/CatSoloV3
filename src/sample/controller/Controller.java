@@ -8,13 +8,11 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
@@ -32,18 +30,18 @@ import java.util.*;
 
 public class Controller implements Observer {
 
-        /*** Scene and JavaFX variables ***/
-    private GraphicsContext graficos;
+    /*** Scene and JavaFX variables ***/
     private Group root;
     private Scene scene;
     private Canvas lienzo;
     private Stage primaryStage;
     private ImageView salir;
-    private Button exit;
     public static AudioClip audio;
+    private GraphicsContext graficos;
+    public static AnimationTimer animation;
+
 
     /*** Arraylist and Hashmap ***/
-    public static AnimationTimer animation;
     public static HashMap<String, Image> imagenes;
     public static ObservableList<Obstaculo> data = FXCollections.observableArrayList();
     public static ArrayList<Obstaculo> listView = new ArrayList<>(data);
@@ -51,10 +49,13 @@ public class Controller implements Observer {
     /*** Movement ***/
     private int move_x = 0;
     private int move_y = 200;
-    private double timer = 0;
     private int auxiliar = 0;
+    private int auxAltoItem1 = 200;
+    private int auxAltoItem2 = 100;
+    private int auxAltoItem3 = 125;
+    private double timer = 0;
 
-    /*** Variables buttons keyboard  ***/
+    /*** Variables keyboard buttons ***/
     public static boolean up;
     public static boolean down;
     public static boolean rigth;
@@ -83,16 +84,14 @@ public class Controller implements Observer {
     @FXML
     void onMouseClikedIniciar(ActionEvent event) {
         Main.audio.stop();
-
         initializeStage();
     }
+
 
     @FXML
     void onMouseClickedExit(MouseEvent event) {
         System.exit(0);
     }
-
-
 
 
     public void initializeStage(){
@@ -114,12 +113,12 @@ public class Controller implements Observer {
         scene = new Scene(root, 700 , 500);
         lienzo = new Canvas(700, 500);
 
-        setImage();
+        setImageButtonSalir();
         root.getChildren().addAll(lienzo , salir );
         graficos = lienzo.getGraphicsContext2D();
     }
 
-    public void setImage(){
+    public void setImageButtonSalir(){
         try{
             FileInputStream input = new FileInputStream("src/exit.png");
             Image image = new Image(input);
@@ -128,13 +127,6 @@ public class Controller implements Observer {
             salir.setY(440);
             salir.setFitWidth(60);
             salir.setPreserveRatio(true);
-
-            exit = new Button();
-            //exit.setMaxSize(400.0 , 400.0);
-            exit.setLayoutX(635);
-            exit.setLayoutY(440);
-
-
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -151,6 +143,7 @@ public class Controller implements Observer {
         /***launch Threads ***/
         new Thread(new Obstaculo('1', this)).start();
         new Thread(new Obstaculo('2', this)).start();
+        new Thread(new Obstaculo('3', this)).start();
     }
 
 
@@ -218,8 +211,9 @@ public class Controller implements Observer {
         imagenes.put("fondo2", new Image("fondo2.png"));
         imagenes.put("fondo3", new Image("fondo3.jpg"));
         imagenes.put("fondo4", new Image("fondo4.jpg"));
-        imagenes.put("item1", new Image("item1.png"));
-        imagenes.put("item2", new Image("item2.png"));
+        imagenes.put("cov1", new Image("covid1.png"));
+        imagenes.put("cov2", new Image("covid3.png"));
+        imagenes.put("cov3", new Image("covid4.png"));
         imagenes.put("over", new Image("gameover.png"));
     }
 
@@ -252,7 +246,7 @@ public class Controller implements Observer {
             public void handle(KeyEvent event) {
                 switch (event.getCode().toString()){
                     case "RIGHT":
-                        rigth = false;;
+                        rigth = false;
                         player.setDireccion(1);
                         break;
                     case "LEFT":
@@ -286,23 +280,39 @@ public class Controller implements Observer {
         });
     }
 
-    @Override
+
+    @Override          /*** Obstaculo - id***/
     public void update(Observable o, Object arg) {
+        numRandItems();
         switch ((String) arg) {
             case "1":
-                /*** Item1 = tubo de abajo ***/
-                Obstaculo obstacleH1 = new Obstaculo(1, 700, 295, 3 , "item1");
+                Obstaculo obstacleH1 = new Obstaculo(1 , 700 , auxAltoItem1 , 3 , "cov1" , auxAltoItem1 , 90 , auxAltoItem1);
                 if(obstacleH1 != null){
                     Platform.runLater(() -> listView.add(obstacleH1));
                 }
                 break;
             case "2":
-                /*** Item2 = tubo de arriba ***/
-                Obstaculo obstacleH2 = new Obstaculo(1,700, 0, 3 , "item2");
+                Obstaculo obstacleH2 = new Obstaculo(1,700, auxAltoItem2, 3 , "cov2" , auxAltoItem2 , 90 , auxAltoItem2);
                 if(obstacleH2 != null){
                     Platform.runLater(() -> listView.add(obstacleH2));
                 }
                 break;
+            case "3":
+                Obstaculo obstacleH3 = new Obstaculo(1,700, auxAltoItem3, 3 , "cov3" , auxAltoItem3 , 90 , auxAltoItem3);
+                System.out.println();
+                if(obstacleH3 != null){
+                    Platform.runLater(() -> listView.add(obstacleH3));
+                }
+                break;
         }
     }
+
+    public void numRandItems(){
+        int  auxRange= (290-125)+1;
+        auxAltoItem1 = (int) (Math.random() * (150 - 30 ) +30);
+        auxAltoItem2 = (int) (Math.random() * (280-125  ) +90);
+        auxAltoItem3 = (int) (Math.random() *  auxRange ) +125 ;
+
+    }
+
 }

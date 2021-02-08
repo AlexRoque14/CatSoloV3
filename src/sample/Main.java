@@ -30,7 +30,7 @@ public class Main extends Application {
     public void initializeSound(){
         String musicFile = "src/sound/menu.mp3";
         audio = new AudioClip(new File(musicFile).toURI().toString());
-        audio.setVolume(3);
+        audio.setVolume(100.1);
         audio.play();
     }
 
